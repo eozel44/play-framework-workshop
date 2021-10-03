@@ -15,13 +15,8 @@ GET     /productRE/$prodType<[a-z]{2}\d\d>/:prodNum           controllers.HomeCo
 GET     /tasklist                           controllers.TaskList.taskList
 GET     /login                              controllers.TaskList.login
 GET     /validateLoginGet                    controllers.TaskList.validateLoginGet(username,password)
-#cross origin turn off for now...
-+nocsrf
 POST    /validateLoginPost                   controllers.TaskList.validateLoginPost
-
-+nocsrf
 POST    /createUser                   controllers.TaskList.createUser
-+nocsrf
 GET    /logout                   controllers.TaskList.logout
 
 # Map static resources from the /public folder to the /assets URL path

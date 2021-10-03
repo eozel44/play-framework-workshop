@@ -11,11 +11,11 @@ import play.api.routing._
 class TaskList @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
 
-  def login = Action {
+  def login = Action {implicit request=>
     Ok(views.html.login())
   }
 
-  def taskList = Action { request=>
+  def taskList = Action { implicit request=>
     request.session.get("username").map {username=>
       val tasks = TaskListInMemoryModel.getTasks(username)
       Ok(views.html.TaskList(tasks))
@@ -28,7 +28,7 @@ class TaskList @Inject()(val controllerComponents: ControllerComponents) extends
   }
 
   //parameters encoding the body
-  def validateLoginPost()= Action { request=>
+  def validateLoginPost()= Action { implicit request=>
 
     request.body.asFormUrlEncoded.map{ args =>
       val username = args("username").head
@@ -42,7 +42,7 @@ class TaskList @Inject()(val controllerComponents: ControllerComponents) extends
     }.getOrElse(Redirect(routes.TaskList.login))
   }
 
-  def createUser =Action{ request=>
+  def createUser =Action{ implicit request=>
     request.body.asFormUrlEncoded.map{args=>
       val username =args("username").head
       val password = args("password").head
