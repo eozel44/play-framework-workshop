@@ -39,7 +39,7 @@ class TaskList @Inject()(val controllerComponents: ControllerComponents) extends
       else
         Redirect(routes.TaskList.login)
 
-    }.getOrElse(Redirect(routes.TaskList.login))
+    }.getOrElse(Redirect(routes.TaskList.login)).flashing("error" ->"Invalid username/password combination")
   }
 
   def createUser =Action{ implicit request=>
@@ -50,7 +50,7 @@ class TaskList @Inject()(val controllerComponents: ControllerComponents) extends
         Redirect(routes.TaskList.taskList).withSession("username"->username)
       else
         Redirect(routes.TaskList.login)
-    }.getOrElse(Redirect(routes.TaskList.login))
+    }.getOrElse(Redirect(routes.TaskList.login)).flashing("error" ->"User creation failed.")
   }
 
   def logout=Action{

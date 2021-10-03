@@ -1,6 +1,6 @@
 @*taskList template*@
 
-@(tasks:Seq[String])
+@(tasks:Seq[String])(implicit flash:Flash)
 
 @main("Task List"){
        <h2>Task List</h2>
