@@ -57,6 +57,26 @@ class TaskList @Inject()(val controllerComponents: ControllerComponents) extends
     Redirect(routes.TaskList.login).withNewSession
   }
 
+  def addTask=Action{implicit request=>
+    request.session.get("username").map{ username =>
+      request.body.asFormUrlEncoded.map{ args=>
+        val task = args("newTask").head
+        TaskListInMemoryModel.addTask(username,task)
+        Redirect(routes.TaskList.taskList)
+      }.getOrElse(Redirect(routes.TaskList.taskList))
+    }.getOrElse(Redirect(routes.TaskList.login))
+  }
+
+  def deleteTask=Action{ implicit request=>
+    request.session.get("username").map{ username =>
+      request.body.asFormUrlEncoded.map{ args=>
+        val index = args("index").head.toInt
+        TaskListInMemoryModel.removeTask(username,index)
+        Redirect(routes.TaskList.taskList)
+      }.getOrElse(Redirect(routes.TaskList.taskList))
+    }.getOrElse(Redirect(routes.TaskList.login))
+
+  }
 
 
 }
