@@ -4,12 +4,12 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                                     controllers.HomeController.index()
+GET     /                                     controllers.Application.index()
 
 
-GET     /productArgs                                          controllers.HomeController.product(prodType:String,prodNum:Int)
-GET     /product/:prodType/:prodNum                           controllers.HomeController.product(prodType:String,prodNum:Int)
-GET     /productRE/$prodType<[a-z]{2}\d\d>/:prodNum           controllers.HomeController.product(prodType:String,prodNum:Int)
+GET     /productArgs                                          controllers.Application.product(prodType:String,prodNum:Int)
+GET     /product/:prodType/:prodNum                           controllers.Application.product(prodType:String,prodNum:Int)
+GET     /productRE/$prodType<[a-z]{2}\d\d>/:prodNum           controllers.Application.product(prodType:String,prodNum:Int)
 
 
 GET     /tasklist                            controllers.TaskList.taskList
