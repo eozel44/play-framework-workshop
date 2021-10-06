@@ -1,4 +1,4 @@
-@()(implicit request:RequestHeader, flash:Flash)
+@(loginForm:Form[LoginData])(implicit request:MessagesRequestHeader, flash:Flash)
 
 @main("Login"){
 <h2>Login</h2>
@@ -30,5 +30,16 @@
     <br>
     <input type="submit"></input>
 </form>
+
+@helper.form(action=routes.TaskList.createUserForm){
+    @helper.CSRF.formField
+    <h3>Create User with Play Form</h3>
+    @helper.inputText(loginForm("username"))
+    @helper.inputText(loginForm("password"))
+    <div class="form-actions">
+        <button type="submit">Login</button>
+    </div>
+}
+
 
 }
