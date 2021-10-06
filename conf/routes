@@ -10,6 +10,7 @@ GET     /                                     controllers.Application.index()
 GET     /productArgs                                          controllers.Application.product(prodType:String,prodNum:Int)
 GET     /product/:prodType/:prodNum                           controllers.Application.product(prodType:String,prodNum:Int)
 GET     /productRE/$prodType<[a-z]{2}\d\d>/:prodNum           controllers.Application.product(prodType:String,prodNum:Int)
+GET     /random                              controllers.Application.randomNumber   
 
 
 GET     /tasklist                            controllers.TaskList.taskList

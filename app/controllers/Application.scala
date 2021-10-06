@@ -25,4 +25,9 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
   def product(prodType:String,prodNum:Int)=Action{
     Ok(s"Product Type: $prodType, Product Number: $prodNum")
   }
+
+  def randomNumber=Action{
+    Ok(util.Random.nextInt(100).toString())
+
+  }
 }
