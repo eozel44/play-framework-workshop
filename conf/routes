@@ -27,7 +27,10 @@ POST    /createUserForm                      controllers.TaskList.createUserForm
 GET    /load                                controllers.TaskList2.load
 GET    /login2                              controllers.TaskList2.login
 GET    /validate2                              controllers.TaskList2.validate(username,password)
-
+GET    /create2                             controllers.TaskList2.create(username,password)
+GET    /deleteTask2                         controllers.TaskList2.deleteTask(index)
+GET    /addTask2                            controllers.TaskList2.addTask(task)
+GET    /logout2                            controllers.TaskList2.logout        
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
