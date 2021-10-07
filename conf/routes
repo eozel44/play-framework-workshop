@@ -26,10 +26,11 @@ POST    /createUserForm                      controllers.TaskList.createUserForm
 #routes for web v2.0
 GET    /load                                controllers.TaskList2.load
 GET    /login2                              controllers.TaskList2.login
-GET    /validate2                              controllers.TaskList2.validate(username,password)
-GET    /create2                             controllers.TaskList2.create(username,password)
-GET    /deleteTask2                         controllers.TaskList2.deleteTask(index)
-GET    /addTask2                            controllers.TaskList2.addTask(task)
+GET		/taskList2						    controllers.TaskList2.taskList
+POST    /validate2                          controllers.TaskList2.validate
+POST    /create2                             controllers.TaskList2.create
+POST    /deleteTask2                         controllers.TaskList2.deleteTask
+POST    /addTask2                            controllers.TaskList2.addTask
 GET    /logout2                            controllers.TaskList2.logout        
 
 # Map static resources from the /public folder to the /assets URL path
