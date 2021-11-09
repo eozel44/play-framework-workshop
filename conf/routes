@@ -42,5 +42,14 @@ POST	/addTask3						controllers.TaskList3.addTask
 POST	/deleteTask3					controllers.TaskList3.delete
 GET  /logout3						controllers.TaskList3.logout
 
+#routes for version 4.0
+GET   /load4            controllers.TaskList4.load
+POST	/validate4						controllers.TaskList4.validate
+POST	/create4						controllers.TaskList4.createUser
+GET 	/taskList4						controllers.TaskList4.tasklist
+POST	/addTask4						controllers.TaskList4.addTask
+POST	/deleteTask4					controllers.TaskList4.delete
+GET  /logout4						controllers.TaskList4.logout
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
