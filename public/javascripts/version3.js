@@ -80,3 +80,23 @@ function addTask() {
 	  document.getElementById("task-section").hidden = true;
 	});
   }
+
+  function createUser() {
+	const username = document.getElementById("createName").value;
+	const password = document.getElementById("createPass").value;
+	fetch(createRoute, { 
+		  method: 'POST',
+		  headers: {'Content-Type': 'application/json', 'Csrf-Token': csrfToken },
+		  body: JSON.stringify({ username, password })
+	  }).then(res => res.json()).then(data => {
+	  if(data) {
+		document.getElementById("login-section").hidden = true;
+		document.getElementById("task-section").hidden = false;
+		document.getElementById("login-message").innerHTML = "";
+		document.getElementById("create-message").innerHTML = "";
+		loadTasks();
+	  } else {
+		document.getElementById("create-message").innerHTML = "User Creation Failed";
+	  }
+	});
+  }
