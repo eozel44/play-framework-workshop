@@ -1,28 +1,26 @@
 package controllers
 
-import javax.inject._
-import play.api.mvc._
-import play.api.i18n._
 import models.TaskListInMemoryModel
+import play.api.mvc._
+
+import javax.inject._
 
 @Singleton
-class TaskList2 @Inject()(cc: ControllerComponents) extends AbstractController(cc){
+class TaskList2 @Inject() (cc: ControllerComponents) extends AbstractController(cc) {
 
-    def load=Action{ implicit request=>
-       val usernameOption = request.session.get("username")
+  def load: Action[AnyContent] = Action { implicit request =>
+    val usernameOption = request.session.get("username")
     usernameOption.map { username =>
       Ok(views.html.version2Main(routes.TaskList2.taskList.toString))
     }.getOrElse(Ok(views.html.version2Main(routes.TaskList2.login.toString)))
-        
-        
-    }
 
-    def login=Action{ implicit request=>
-        Ok(views.html.login2())
-    }
-    def validate=Action{ implicit request=>
+  }
 
-      val postVals = request.body.asFormUrlEncoded
+  def login: Action[AnyContent] = Action { implicit request =>
+    Ok(views.html.login2())
+  }
+  def validate: Action[AnyContent] = Action { implicit request =>
+    val postVals = request.body.asFormUrlEncoded
     postVals.map { args =>
       val username = args("username").head
       val password = args("password").head
@@ -33,13 +31,11 @@ class TaskList2 @Inject()(cc: ControllerComponents) extends AbstractController(c
         Ok(views.html.login2())
       }
     }.getOrElse(Ok(views.html.login2()))
-        
-    
-    }
 
-    def create=Action{ implicit request=>
-        
-        val postVals = request.body.asFormUrlEncoded
+  }
+
+  def create: Action[AnyContent] = Action { implicit request =>
+    val postVals = request.body.asFormUrlEncoded
     postVals.map { args =>
       val username = args("username").head
       val password = args("password").head
@@ -49,11 +45,11 @@ class TaskList2 @Inject()(cc: ControllerComponents) extends AbstractController(c
       } else {
         Ok(views.html.login2())
       }
-    }.getOrElse(Ok(views.html.login2()))  
-    }
+    }.getOrElse(Ok(views.html.login2()))
+  }
 
-    def deleteTask=Action{ implicit request=>
-       val usernameOption = request.session.get("username")
+  def deleteTask: Action[AnyContent] = Action { implicit request =>
+    val usernameOption = request.session.get("username")
     usernameOption.map { username =>
       val postVals = request.body.asFormUrlEncoded
       postVals.map { args =>
@@ -62,9 +58,9 @@ class TaskList2 @Inject()(cc: ControllerComponents) extends AbstractController(c
         Ok(views.html.tasklist2(TaskListInMemoryModel.getTasks(username)))
       }.getOrElse(Ok(views.html.login2()))
     }.getOrElse(Ok(views.html.login2()))
-    }
+  }
 
-    def addTask = Action { implicit request =>
+  def addTask: Action[AnyContent] = Action { implicit request =>
     val usernameOption = request.session.get("username")
     usernameOption.map { username =>
       val postVals = request.body.asFormUrlEncoded
@@ -76,11 +72,11 @@ class TaskList2 @Inject()(cc: ControllerComponents) extends AbstractController(c
     }.getOrElse(Ok(views.html.login2()))
   }
 
-   def logout = Action {
+  def logout: Action[AnyContent] = Action {
     Redirect(routes.TaskList2.load).withNewSession
   }
 
-  def taskList = Action { implicit request =>
+  def taskList: Action[AnyContent] = Action { implicit request =>
     val usernameOption = request.session.get("username")
     usernameOption.map { username =>
       Ok(views.html.tasklist2(TaskListInMemoryModel.getTasks(username)))

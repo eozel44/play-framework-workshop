@@ -1,11 +1,34 @@
-name := """playWithScala"""
-organization := "com.shadowteam"
+ThisBuild / name := """playWithScala"""
+ThisBuild / scalaVersion := "2.13.6"
+ThisBuild / version := "0.1.0-SNAPSHOT"
+ThisBuild / organization := "com.eozel"
+ThisBuild / organizationName := "eozel"
 
-version := "1.0-SNAPSHOT"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+ThisBuild / semanticdbEnabled := true
+ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
+ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.5.0"
+ThisBuild / scalafixDependencies += "com.github.vovapolu"  %% "scaluzzi"         % "0.1.20"
+ThisBuild / scalafixScalaBinaryVersion := CrossVersion.binaryScalaVersion(scalaVersion.value)
 
-scalaVersion := "2.13.6"
+
+lazy val scalacopts = Seq(
+  "-feature",
+  "-deprecation",
+  "-encoding",
+  "UTF-8",
+  "-language:postfixOps",
+  "-language:higherKinds",
+  "-Wunused:imports",
+  "-Ymacro-annotations"
+)
+
+
+ 
+
+lazy val root = (project in file("."))
+.settings(scalacOptions ++= scalacopts)
+.enablePlugins(PlayScala)
 
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
