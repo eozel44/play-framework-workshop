@@ -50,31 +50,29 @@ class TaskList4 @Inject() (
       .getOrElse(Future.successful(Ok(Json.toJson(Seq.empty[String]))))
   }
 
+    def withSessionUserid(f: Int => Future[Result])(implicit request: Request[AnyContent]): Future[Result] = {
+    request.session.get("userid").map(userid => f(userid.toInt)).getOrElse(Future.successful(Ok(Json.toJson(Seq.empty[String]))))
+  }
+
   def validate = Action.async { implicit request =>
     withJsonBody[UserData] { ud =>
-      model.validateUser(ud.username, ud.password).map { userExits =>
-
-        if(userExits){
-        Ok(Json.toJson(true))
-          .withSession(
-            "username" -> ud.username,
-            "csrfToken" -> play.filters.csrf.CSRF.getToken
-              .map(_.value)
-              .getOrElse("")
-          )
-      } else {
-        Ok(Json.toJson(false))
+      model.validateUser(ud.username, ud.password).map { ouserId =>
+        ouserId match {
+          case Some(userid) =>
+            Ok(Json.toJson(true))
+              .withSession("username" -> ud.username, "userid" -> userid.toString, "csrfToken" -> play.filters.csrf.CSRF.getToken.map(_.value).getOrElse(""))
+          case None =>
+            Ok(Json.toJson(false))
+        }
       }
     }
   }
-}
 
-  def tasklist = TODO 
-    // Action.async { implicit request =>
-  //   withSessionUsername { username =>
-  //     Ok(Json.toJson(model.getTasks(username)))
-  //   }
-  // }
+  def tasklist = Action.async { implicit request =>
+    withSessionUsername { username =>
+      model.getTasks(username).map(tasks => Ok(Json.toJson(tasks)))
+    }
+  }
 
   def createUser = Action.async { implicit request =>
     withJsonBody[UserData] { ud =>
@@ -94,44 +92,21 @@ class TaskList4 @Inject() (
   }
   }
 
-  def addTask = TODO 
-  //   Action.async { implicit request =>
-  //   withSessionUsername { username =>
-  //     withJsonBody[String] { task =>
-  //       model.addTask(username, task);
-  //       Ok(Json.toJson(true))
-  //     }
-  //   }
-  // }
-
-  def delete = TODO
-    
-  //   Action.async { implicit request =>
-  //   withSessionUsername { username =>
-  //     withJsonBody[Int] { index =>
-  //       model.removeTask(username, index)
-  //       Ok(Json.toJson(true))
-  //     }
-  //   }
-  // }
-
-  /** * before refactoring
-    */
-  /*
-   def delete = Action { implicit request =>
-    val usernameOption = request.session.get("username")
-    usernameOption.map { username =>
-      request.body.asJson.map { body =>
-        Json.fromJson[Int](body) match {
-          case JsSuccess(index, path) =>
-            TaskListInMemoryModel.removeTask(username, index)
-            Ok(Json.toJson(true))
-          case e @ JsError(_) => Redirect(routes.TaskList4.load())
-        }
-      }.getOrElse(Ok(Json.toJson(false)))
-    }.getOrElse(Ok(Json.toJson(false)))
+    def addTask = Action.async { implicit request =>
+    withSessionUserid { userid =>
+      withJsonBody[String] { task =>
+        model.addTask(userid, task).map(count => Ok(Json.toJson(count > 0)))
+      }
+    }
   }
-   */
+  //TODO: need refactor javascipt to send itemId
+  def delete = Action.async { implicit request =>
+    withSessionUsername { username =>
+      withJsonBody[Int] { itemId =>
+        model.removeTask(itemId).map(removed => Ok(Json.toJson(removed)))
+      }
+    }
+  }
 
   def logout = Action { implicit request =>
     Ok(Json.toJson(true)).withSession(request.session - "username")
